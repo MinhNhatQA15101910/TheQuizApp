@@ -1,5 +1,6 @@
 package com.donhat.thequizapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -23,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private QuizViewModel _quizViewModel;
     private List<Question> _questionList;
 
-    private static int _result = 0;
-    private static int _totalQuestions = 0;
+    public static int result = 0;
+    public static int totalQuestions = 0;
     private int _i = 0;
 
     @Override
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         _activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         // Resetting the Scores
-        _result = 0;
-        _totalQuestions = 0;
+        result = 0;
+        totalQuestions = 0;
 
         // Creating an instance of QuizViewModel
         _quizViewModel = new ViewModelProvider(this).get(QuizViewModel.class);
@@ -66,6 +67,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayNextQuestion() {
+        // Direct user to the ResultActivity
+        if (_activityMainBinding.nextBtn.getText().equals("Finish")) {
+            Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         int selectedOption = _activityMainBinding.optionsRadioGroup.getCheckedRadioButtonId();
         if (selectedOption != -1) {
             RadioButton radioButton = findViewById(selectedOption);
@@ -73,14 +81,14 @@ public class MainActivity extends AppCompatActivity {
             // More questions to display
             if (_questionList.size() - _i > 0) {
                 // Getting the number of questions
-                _totalQuestions = _questionList.size();
+                totalQuestions = _questionList.size();
 
                 // Check if the chosen option is correct
                 if (radioButton.getText().toString().equals(
                         _questionList.get(_i).getCorrectOption())
                 ) {
-                    _result++;
-                    _activityMainBinding.resultTextView.setText("Correct Answer: " + _result);
+                    result++;
+                    _activityMainBinding.resultTextView.setText("Correct Answer: " + result);
                 }
 
                 if (_i == 0) {
@@ -103,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (radioButton.getText().toString().equals(
                     _questionList.get(_i - 1).getCorrectOption()
             )) {
-                _activityMainBinding.resultTextView.setText("Correct Answer: " + _result);
+                result++;
+                _activityMainBinding.resultTextView.setText("Correct Answer: " + result);
             }
         } else {
             Toast.makeText(
