@@ -16,7 +16,7 @@ public class QuizViewModel extends ViewModel {
         _questionListLiveData = _quizRepository.getQuestionsFromAPI();
     }
 
-    public LiveData<ArrayList<Question>> get_questionListLiveData() {
+    public LiveData<ArrayList<Question>> getQuestionListLiveData() {
         return _questionListLiveData;
     }
 }
