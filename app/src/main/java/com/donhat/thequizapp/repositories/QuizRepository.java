@@ -14,7 +14,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class QuizRepository {
-    private QuestionAPI _questionAPI;
+    private final QuestionAPI _questionAPI;
 
     public QuizRepository() {
         _questionAPI = new RetrofitInstance().getRetrofitInstance().create(QuestionAPI.class);
